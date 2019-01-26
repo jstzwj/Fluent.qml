@@ -1,0 +1,9 @@
+# author JunWang
+# email jstzwj@aliyun.com
+# time 2019/1/26
+
+module FluentUI
+
+singleton FluentGlobal 0.1 FluentGlobal.qml
+
+FluentButton 0.1 ./control/FluentButton.qml
