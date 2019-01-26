@@ -1,47 +1,72 @@
 import QtQuick 2.0
+import QtQuick.Controls 2.0
 import FluentUI 0.1
 
-Rectangle {
-    id: button
+Button {
+    id: control
     width: 100
     height: 50
-    color: FluentGlobal.lightSystemBaseLowColor
-    border.color: "transparent"
-    border.width: 3
-    transform: Scale {
-        id: buttonScale
-        origin.x: width/2
-        origin.y: height/2
-        xScale: 1
-        yScale: 1
-        }
+    hoverEnabled: true
+    background: Rectangle {
+        id: buttonBackground
+        implicitWidth: 100
+        implicitHeight: 40
+        opacity: enabled ? 1 : 0.3
+        color: FluentGlobal.lightSystemBaseLowColor
+        border.color: "transparent"
+        border.width: 3
 
-    Text {
-        anchors.centerIn: parent
-        text: "你好世界"
-        color: FluentGlobal.lightSystemBaseHighColor
+        states: [
+            State {
+                name: "hover"
+                when: control.hovered && !control.down
+                PropertyChanges {
+                    target: buttonBackground
+                    border.color: FluentGlobal.lightSystemBaseMediumLowColor
+                }
+            },
+            State {
+                name: "normal"
+                when: !control.down
+                PropertyChanges {
+                    target: buttonBackground
+                }
+            },
+            State {
+                name: "down"
+                when: control.down
+                PropertyChanges {
+                    target: buttonBackground
+                    color: FluentGlobal.lightSystemBaseMediumLowColor
+                }
+            }
+        ]
     }
 
-    MouseArea {
-        anchors.fill: parent
-        hoverEnabled: true
-        onPressed:{
-            buttonScale.xScale = 0.98
-            buttonScale.yScale = 0.98
-            button.color = FluentGlobal.lightSystemBaseMediumLowColor
-            console.log("press")
-        }
-        onReleased:{
-            buttonScale.xScale = 1
-            buttonScale.yScale = 1
-            button.color = FluentGlobal.lightSystemBaseLowColor
-            console.log("release")
-        }
-        onEntered:{
-            button.border.color = FluentGlobal.lightSystemBaseMediumLowColor
-        }
-        onExited:{
-            button.border.color = "transparent"
-        }
+    contentItem: Text {
+        id: textItem
+        text: control.text
+
+        font: control.font
+        opacity: enabled ? 1.0 : 0.3
+        color: FluentGlobal.lightSystemBaseHighColor
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        elide: Text.ElideRight
+
+        states: [
+            State {
+                name: "normal"
+                when: !control.down
+            },
+            State {
+                name: "down"
+                when: control.down
+                PropertyChanges {
+                    target: textItem
+                    color: FluentGlobal.lightSystemBaseHighColor
+                }
+            }
+        ]
     }
 }
